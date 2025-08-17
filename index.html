@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA Premium</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous">
+  <style>
+    /* Reset Premium */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+      color: #2d3748;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    
+    .premium-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #f59e0b;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    main {
+      flex: 1;
+      padding: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .menu button {
+      flex: 1 1 45%;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: white;
+      border: none;
+      padding: 1.2rem 0.8rem;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      box-shadow: 0px 4px 8px rgba(99, 102, 241, 0.3);
+      transition: all 0.3s ease;
+      min-width: 160px;
+    }
+    
+    .menu button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0px 6px 12px rgba(99, 102, 241, 0.4);
+    }
+    
+    .menu button i {
+      font-size: 1.2rem;
+    }
+    
+    .tela {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .tela.ativa {
+      display: block;
+    }
+    
+    h2 {
+      color: #4f46e5;
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+    
+    ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    
+    ul li {
+      background: #f8fafc;
+      margin: 0.8rem 0;
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid #4f46e5;
+      transition: transform 0.2s;
+    }
+    
+    ul li:hover {
+      transform: translateX(5px);
+      background: #f1f5f9;
+    }
+    
+    .batimento-alto {
+      color: #ef4444;
+      font-weight: 600;
+    }
+    
+    .batimento-normal {
+      color: #10b981;
+    }
+    
+    .mapa-container {
+      margin-top: 1.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      height: 300px;
+      background: #e2e8f0;
+      position: relative;
+    }
+    
+    .mapa-simulado {
+      width: 100%;
+      height: 100%;
+      background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=Campo+Largo,PR&zoom=13&size=800x300&maptype=roadmap&markers=color:red%7CCampo+Largo,PR&key=YOUR_API_KEY');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4f46e5;
+      font-weight: bold;
+    }
+    
+    .mapa-legenda {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.9);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .controles-vibracao {
+      margin-top: 1.5rem;
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+    }
+    
+    .vibracao-option {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    
+    .vibracao-option input {
+      margin-right: 1rem;
+    }
+    
+    .vibracao-option label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .vibracao-option i {
+      margin-right: 0.8rem;
+      color: #4f46e5;
+    }
+    
+    .relatorio-especialista {
+      background: #f0fdf4;
+      border-left: 4px solid #10b981;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+    }
+    
+    .relatorio-especialista h3 {
+      color: #10b981;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .relatorio-especialista p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .relatorio-especialista ul {
+      margin-top: 0.5rem;
+    }
+    
+    .relatorio-especialista ul li {
+      background: transparent;
+      border-left: none;
+      padding: 0.3rem 0;
+      margin: 0;
+    }
+    
+    .relatorio-especialista ul li:before {
+      content: "•";
+      color: #10b981;
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+    
+    .alarme-form {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    input[type="time"], input[type="text"] {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+    
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    button:hover {
+      background: #4338ca;
+      transform: translateY(-2px);
+    }
+    
+    .alarme-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .alarme-acoes {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .alarme-acoes button {
+      padding: 0.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .alarme-acoes .editar {
+      background: #f59e0b;
+    }
+    
+    .alarme-acoes .excluir {
+      background: #ef4444;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #1e293b;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .menu button {
+        flex: 1 1 100%;
+      }
+      
+      .alarme-form {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Aura Premium</h1>
+    <div class="premium-badge">PREMIUM</div>
+  </header>
+
+  <main>
+    <div class="menu">
+      <button onclick="mostrarTela('batimentos')"><i class="fas fa-heartbeat"></i> Batimentos</button>
+      <button onclick="mostrarTela('alertas')"><i class="fas fa-exclamation-triangle"></i> Alertas</button>
+      <button onclick="mostrarTela('localizacao')"><i class="fas fa-map-marker-alt"></i> Localização</button>
+      <button onclick="mostrarTela('alarmes')"><i class="fas fa-bell"></i> Alarmes</button>
+      <button onclick="mostrarTela('vibracao')"><i class="fas fa-vibrate"></i> Vibração</button>
+    </div>
+
+    <section id="batimentos" class="tela ativa">
+      <h2><i class="fas fa-heartbeat"></i> Monitoramento Cardíaco</h2>
+      <div class="grafico-simulado" style="height: 200px; background: #f8fafc; border-radius: 12px; margin-bottom: 1.5rem; display: flex; align-items: flex-end; padding: 1rem;">
+        <div style="flex: 1; display: flex; justify-content: space-around; align-items: flex-end; height: 100%;">
+          <div style="width: 8%; background: #4f46e5; height: 30%; border-radius: 4px 4px 0 0;"></div>
+          <div style="width: 8%; background: #4f46e5; height: 45%; border-radius: 4px 4px 0 0;"></div>
+          <div style="width: 8%; background: #ef4444; height: 80%; border-radius: 4px 4px 0 0;"></div>
+          <div style="width: 8%; background: #ef4444; height: 95%; border-radius: 4px 4px 0 0;"></div>
+          <div style="width: 8%; background: #4f46e5; height: 60%; border-radius: 4px 4px 0 0;"></div>
+          <div style="width: 8%; background: #10b981; height: 35%; border-radius: 4px 4px 0 0;"></div>
+        </div>
+      </div>
+      <ul id="listaBatimentos"></ul>
+      
+      <div class="relatorio-especialista">
+        <h3><i class="fas fa-user-md"></i> Relatório do Especialista</h3>
+        <p>Baseado nos dados coletados nos últimos 7 dias, identificamos os seguintes padrões:</p>
+        <ul>
+          <li>3 episódios de taquicardia (acima de 100 BPM)</li>
+          <li>Padrão cardíaco indica possível ansiedade às terças-feiras no período da tarde</li>
+          <li>Batimentos mais regulares durante atividades físicas moderadas</li>
+        </ul>
+        <p><strong>Recomendação:</strong> Sugerimos exercícios de respiração quando os batimentos atingirem 90 BPM e uma avaliação médica caso os episódios de taquicardia persistam.</p>
+      </div>
+    </section>
+
+    <section id="alertas" class="tela">
+      <h2><i class="fas fa-exclamation-triangle"></i> Histórico de Alertas</h2>
+      <div style="margin-bottom: 1.5rem; background: #fff7ed; padding: 1rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
+        <h3 style="color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem;"><i class="fas fa-lightbulb"></i> Dica Premium</h3>
+        <p>Com a versão premium, você recebe alertas preditivos antes das crises, com base em seus padrões históricos.</p>
+      </div>
+      <ul id="listaAlertas"></ul>
+    </section>
+
+    <section id="localizacao" class="tela">
+      <h2><i class="fas fa-map-marker-alt"></i> Rastreamento em Campo Largo/PR</h2>
+      <div class="mapa-container">
+        <div class="mapa-simulado">
+          Campo Largo/PR
+          <div class="mapa-legenda">
+            <i class="fas fa-walking"></i> Último trajeto registrado
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 1.5rem; background: #f0f9ff; padding: 1rem; border-radius: 12px; border-left: 4px solid #0ea5e9;">
+        <h3 style="color: #0ea5e9; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem;"><i class="fas fa-map-marked-alt"></i> Trajeto Simulado</h3>
+        <p>Rua XV de Novembro → Praça Getúlio Vargas → Av. João XXIII → Colégio Estadual (período escolar)</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;"><i class="fas fa-clock"></i> Tempo médio do trajeto: 18 minutos</p>
+      </div>
+    </section>
+
+    <section id="alarmes" class="tela">
+      <h2><i class="fas fa-bell"></i> Alarmes Personalizados</h2>
+      <div class="alarme-form">
+        <input type="time" id="horarioAlarme" placeholder="Horário">
+        <input type="text" id="rotuloAlarme" placeholder="Descrição (opcional)">
+        <button onclick="programarAlarme()"><i class="fas fa-plus"></i> Adicionar</button>
+      </div>
+      <ul id="listaAlarmes"></ul>
+      
+      <div style="margin-top: 1.5rem; background: #f5f3ff; padding: 1rem; border-radius: 12px; border-left: 4px solid #8b5cf6;">
+        <h3 style="color: #8b5cf6; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem;"><i class="fas fa-magic"></i> Sugestão Premium</h3>
+        <p>Para usuários com TDAH, recomendamos alarmes com vibração intermitente e descrições claras (ex: "Tomar medicação", "Aula de matemática").</p>
+      </div>
+    </section>
+
+    <section id="vibracao" class="tela">
+      <h2><i class="fas fa-vibrate"></i> Controle de Vibração</h2>
+      <div class="controles-vibracao">
+        <h3 style="color: #4f46e5; margin-bottom: 1rem;">Selecione o padrão de vibração:</h3>
+        
+        <div class="vibracao-option">
+          <input type="radio" id="vibracao1" name="vibracao" value="suave" checked>
+          <label for="vibracao1">
+            <i class="fas fa-volume-down"></i> Suave (para alertas rotineiros)
+          </label>
+        </div>
+        
+        <div class="vibracao-option">
+          <input type="radio" id="vibracao2" name="vibracao" value="intermitente">
+          <label for="vibracao2">
+            <i class="fas fa-wave-square"></i> Intermitente (para lembretes importantes)
+          </label>
+        </div>
+        
+        <div class="vibracao-option">
+          <input type="radio" id="vibracao3" name="vibracao" value="forte">
+          <label for="vibracao3">
+            <i class="fas fa-volume-up"></i> Forte (para emergências)
+          </label>
+        </div>
+        
+        <div class="vibracao-option">
+          <input type="radio" id="vibracao4" name="vibracao" value="personalizado">
+          <label for="vibracao4">
+            <i class="fas fa-sliders-h"></i> Personalizado
+          </label>
+        </div>
+      </div>
+      
+      <div id="controlesPersonalizados" style="display: none; margin-top: 1.5rem; background: #f8fafc; padding: 1.5rem; border-radius: 12px;">
+        <h3 style="color: #4f46e5; margin-bottom: 1rem;"><i class="fas fa-cog"></i> Ajustes Avançados</h3>
+        
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Intensidade:</label>
+          <input type="range" min="1" max="10" value="5" style="width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Padrão:</label>
+          <select style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <option value="continuo">Contínuo</option>
+            <option value="curto">Pulsos curtos</option>
+            <option value="longo">Pulsos longos</option>
+            <option value="alternado">Alternado</option>
+          </select>
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Duração (segundos):</label>
+          <input type="number" min="1" max="60" value="3" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+        </div>
+        
+        <button style="width: 100%;"><i class="fas fa-save"></i> Salvar Padrão</button>
+      </div>
+      
+      <div style="margin-top: 1.5rem; background: #ecfdf5; padding: 1rem; border-radius: 12px; border-left: 4px solid #10b981;">
+        <h3 style="color: #10b981; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem;"><i class="fas fa-hands-helping"></i> Para Autismo/TDAH</h3>
+        <p>Padrões de vibração suave e contínua são recomendados para usuários com sensibilidade sensorial. A versão premium permite ajustes milimétricos para maior conforto.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Pulseira Inteligente Premium &copy; 2023 - Tecnologia Assistiva para Autismo e TDAH</p>
+  </footer>
+
+  <script>
+    // Alternar telas
+    function mostrarTela(id) {
+      document.querySelectorAll(".tela").forEach(tela => {
+        tela.classList.remove("ativa");
+      });
+      document.getElementById(id).classList.add("ativa");
+      
+      // Atualiza dados quando muda de tela
+      if (id === 'localizacao') {
+        atualizarLocalizacao();
+      }
+    }
+    
+    // Batimentos cardíacos simulados com análise
+    const batimentos = [
+      { valor: 78, data: "10:30", status: "normal" },
+      { valor: 82, data: "12:45", status: "normal" },
+      { valor: 95, data: "15:20", status: "elevado" },
+      { valor: 110, data: "16:50", status: "alto" },
+      { valor: 88, data: "18:30", status: "normal" },
+      { valor: 92, data: "20:15", status: "elevado" }
+    ];
+    
+    const listaBatimentos = document.getElementById("listaBatimentos");
+    batimentos.forEach(b => {
+      let li = document.createElement("li");
+      li.innerHTML = `
+        <span>${b.valor} BPM</span>
+        <span style="font-size: 0.9rem; color: #64748b;">${b.data} - ${b.status === "alto" ? 
+          '<i class="fas fa-exclamation-circle" style="color: #ef4444;"></i> Alto' : 
+          b.status === "elevado" ? 
+          '<i class="fas fa-info-circle" style="color: #f59e0b;"></i> Elevado' : 
+          '<i class="fas fa-check-circle" style="color: #10b981;"></i> Normal'}
+        </span>
+      `;
+      listaBatimentos.appendChild(li);
+    });
+    
+    // Alertas simulados com categorias
+    const alertas = [
+      { tipo: "crise", mensagem: "Possível crise detectada - 16:50", nivel: "alto" },
+      { tipo: "estresse", mensagem: "Níveis de estresse elevados - 12:30", nivel: "medio" },
+      { tipo: "batimento", mensagem: "Taquicardia detectada - 15:20", nivel: "alto" },
+      { tipo: "rotina", mensagem: "Hora da medicação - 08:00", nivel: "baixo" }
+    ];
+    
+    const listaAlertas = document.getElementById("listaAlertas");
+    alertas.forEach(a => {
+      let li = document.createElement("li");
+      let icon, color;
+      
+      if (a.nivel === "alto") {
+        icon = "exclamation-triangle";
+        color = "#ef4444";
+      } else if (a.nivel === "medio") {
+        icon = "exclamation-circle";
+        color = "#f59e0b";
+      } else {
+        icon = "info-circle";
+        color = "#3b82f6";
+      }
+      
+      li.innerHTML = `
+        <div>
+          <i class="fas fa-${icon}" style="color: ${color}; margin-right: 0.5rem;"></i>
+          ${a.mensagem}
+        </div>
+        <span style="font-size: 0.8rem; color: #64748b; text-transform: capitalize;">${a.tipo}</span>
+      `;
+      listaAlertas.appendChild(li);
+    });
+    
+    // Localização simulada em Campo Largo/PR
+    function atualizarLocalizacao() {
+      const locaisCampoLargo = [
+        "Rua XV de Novembro, 250 - Centro, Campo Largo/PR",
+        "Av. João XXIII, 1000 - Jardim Planalto, Campo Largo/PR",
+        "Rua das Flores, 350 - São Cristóvão, Campo Largo/PR",
+        "Praça Getúlio Vargas - Centro, Campo Largo/PR",
+        "Colégio Estadual Campo Largo - Rua da Escola, 500",
+        "Supermercado Modelo - Av. Principal, 1200"
+      ];
+      
+      const localAtual = locaisCampoLargo[Math.floor(Math.random() * locaisCampoLargo.length)];
+      document.querySelector(".mapa-legenda").innerHTML = `
+        <i class="fas fa-map-pin" style="color: #ef4444;"></i> ${localAtual}
+      `;
+    }
+    
+    // Alarmes avançados
+    const listaAlarmes = document.getElementById("listaAlarmes");
+    let alarmes = [
+      { horario: "07:30", rotulo: "Tomar medicação" },
+      { horario: "12:00", rotulo: "Almoço" },
+      { horario: "13:30", rotulo: "Volta às aulas" }
+    ];
+    
+    function renderizarAlarmes() {
+      listaAlarmes.innerHTML = "";
+      alarmes.forEach((alarme, index) => {
+        let li = document.createElement("li");
+        li.className = "alarme-item";
+        li.innerHTML = `
+          <div>
+            <i class="fas fa-bell" style="color: #f59e0b; margin-right: 0.5rem;"></i>
+            ${alarme.horario} - ${alarme.rotulo}
+          </div>
+          <div class="alarme-acoes">
+            <button class="editar" onclick="editarAlarme(${index})"><i class="fas fa-edit"></i></button>
+            <button class="excluir" onclick="excluirAlarme(${index})"><i class="fas fa-trash"></i></button>
+          </div>
+        `;
+        listaAlarmes.appendChild(li);
+      });
+    }
+    
+    function programarAlarme() {
+      const horario = document.getElementById("horarioAlarme").value;
+      const rotulo = document.getElementById("rotuloAlarme").value || "Alarme";
+      
+      if (horario) {
+        alarmes.push({ horario, rotulo });
+        renderizarAlarmes();
+        document.getElementById("horarioAlarme").value = "";
+        document.getElementById("rotuloAlarme").value = "";
+      }
+    }
+    
+    function editarAlarme(index) {
+      const alarme = alarmes[index];
+      document.getElementById("horarioAlarme").value = alarme.horario;
+      document.getElementById("rotuloAlarme").value = alarme.rotulo;
+      excluirAlarme(index);
+    }
+    
+    function excluirAlarme(index) {
+      alarmes.splice(index, 1);
+      renderizarAlarmes();
+    }
+    
+    // Controles de vibração
+    document.querySelectorAll('input[name="vibracao"]').forEach(input => {
+      input.addEventListener('change', function() {
+        const controlesPersonalizados = document.getElementById("controlesPersonalizados");
+        if (this.value === "personalizado") {
+          controlesPersonalizados.style.display = "block";
+        } else {
+          controlesPersonalizados.style.display = "none";
+          // Aqui você implementaria a comunicação com a pulseira
+          console.log(`Padrão de vibração alterado para: ${this.value}`);
+        }
+      });
+    });
+    
+    // Inicialização
+    renderizarAlarmes();
+    atualizarLocalizacao();
+  </script>
+</body>
+</html>
